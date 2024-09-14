@@ -1,5 +1,6 @@
 import React from "react";
 import Register from "../User/Register";
+import PublicPosts from "../Post/PublicPosts";
 
 const Homepage = () => {
   return (
@@ -81,7 +82,7 @@ const Homepage = () => {
         </div>
       </section>
       {/* Home posts list */}
-      {/* <HomePostsLists /> */}
+      <PublicPosts />
     </div>
   );
 };

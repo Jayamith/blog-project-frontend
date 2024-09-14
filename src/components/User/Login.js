@@ -87,7 +87,7 @@ const Login = () => {
               <LoadingComponent />
             ) : (
               <button
-                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-green-700 rounded-xl shadow-4xl focus:ring focus:ring-green-300 bg-green-600 hover:bg-green-700 transition ease-in-out duration-200"
                 type="submit"
               >
                 Login Account
@@ -97,7 +97,7 @@ const Login = () => {
             <p className="font-medium">
               <span className="m-2">Forgot Password?</span>
               <Link
-                className="text-indigo-600 hover:text-indigo-700"
+                className="text-green-600 hover:text-green-700"
                 to="/forgot-password"
               >
                 Reset Password

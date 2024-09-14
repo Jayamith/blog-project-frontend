@@ -62,7 +62,7 @@ const Register = () => {
           Join our community
         </h2>
         {error && <ErrorMsg message={error?.message} />}
-        {success && <SuccessMsg message="Login Successful!" />}
+        {success && <SuccessMsg message="Registration Successful!" />}
         <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
           Lorem ipsum dolor sit amet, consectetur adipisng.
         </h3>
@@ -104,7 +104,7 @@ const Register = () => {
               <LoadingComponent />
             ) : (
               <button
-                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-green-700 rounded-xl shadow-4xl focus:ring focus:ring-green-300 bg-green-600 hover:bg-green-700 transition ease-in-out duration-200"
                 type="submit"
               >
                 Login Account
@@ -112,7 +112,7 @@ const Register = () => {
         )}
 
         <button
-          className="mb-4 inline-block py-3 px-7 w-full leading-6 text-green-50 font-medium text-center bg-green-500 hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md"
+          className="mb-4 inline-block py-3 px-7 w-full leading-6 text-indigo-50 font-medium text-center bg-indigo-500 hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 rounded-md"
           type="submit"
         >
           Get Started
