@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteSinglePostAction,
   fetchSinglePostAction,
+  postViewCountAction,
 } from "../../redux/slices/posts/postSlices";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { LoadingComponent } from "../Alert/LoadingComponent";
@@ -24,11 +25,19 @@ const PostDetails = () => {
 
   useEffect(() => {
     dispatch(fetchSinglePostAction(postId));
+  }, [dispatch, postId, post?.post?.likes.length, post?.post?.dislikes.length]);
+
+  useEffect(() => {
+    dispatch(postViewCountAction(postId));
   }, [dispatch]);
 
-  const creator = post?.post?.author?._id.toString();
+  const creator = post?.post?.author?._id
+    ? post?.post?.author?._id.toString()
+    : null;
 
-  const loginUser = userAuth?.userInfo?._id.toString();
+  const loginUser = userAuth?.userInfo?._id
+    ? userAuth?.userInfo?._id.toString()
+    : null;
 
   const isCreator = creator === loginUser;
 
@@ -43,9 +52,7 @@ const PostDetails = () => {
 
   return (
     <>
-      {loading ? (
-        <LoadingComponent />
-      ) : error ? (
+      {error ? (
         <ErrorMsg message={error?.message} />
       ) : (
         <section
@@ -67,7 +74,7 @@ const PostDetails = () => {
                 </p>
                 <span className="mx-1 text-green-500">•</span>
                 <p className="inline-block font-medium text-green-500">
-                {new Date(post?.post?.createdAt).toDateString()}
+                  {new Date(post?.post?.createdAt).toDateString()}
                 </p>
               </div>
               <h2 className="mb-4 text-3xl font-bold leading-tight tracking-tighter md:text-5xl text-darkCoolGray-900">
@@ -112,6 +119,8 @@ const PostDetails = () => {
               totalComments={post?.post?.comments}
               createdAt={post?.post?.createdAt}
               readingTime={calculateReadingTime(post?.post?.content)}
+              postId={post?.post?._id}
+              claps={post?.post?.claps}
             />
           </div>
           <div className="container px-4 mx-auto">
@@ -121,7 +130,10 @@ const PostDetails = () => {
               </p>
               {isCreator && (
                 <div className="flex justify-end mb-4">
-                  <Link to={`/posts/update/${post?.post?._id}`} className="p-2 mr-2 text-gray-500 hover:text-gray-700">
+                  <Link
+                    to={`/posts/update/${post?.post?._id}`}
+                    className="p-2 mr-2 text-gray-500 hover:text-gray-700"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

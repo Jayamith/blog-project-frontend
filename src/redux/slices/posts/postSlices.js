@@ -30,7 +30,6 @@ export const fetchPrivatePostsAction = createAsyncThunk(
   "posts/fetch-private-posts",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-
       const token = getState().users?.userAuth?.userInfo?.token;
 
       const config = {
@@ -56,7 +55,7 @@ export const fetchSinglePostAction = createAsyncThunk(
   async (postId, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:9080/api/v1/posts/${postId}`,
+        `http://localhost:9080/api/v1/posts/${postId}`
       );
       return data;
     } catch (error) {
@@ -78,7 +77,104 @@ export const deleteSinglePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://localhost:9080/api/v1/posts/${postId}`, config
+        `http://localhost:9080/api/v1/posts/${postId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! Like Post Action
+export const likePostAction = createAsyncThunk(
+  "posts/like",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/likes/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! Dislike Post Action
+export const dislikePostAction = createAsyncThunk(
+  "posts/dislike",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/dislikes/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! Clap Post Action
+export const clapPostAction = createAsyncThunk(
+  "posts/clap",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/claps/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! Post View Count Action
+export const postViewCountAction = createAsyncThunk(
+  "posts/post-views",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/post-views/${postId}`,
+        {},
+        config
       );
       return data;
     } catch (error) {
@@ -150,7 +246,7 @@ export const updatePostAction = createAsyncThunk(
 );
 
 //! Posts Slices
-const publicPostSlice = createSlice({
+const postsSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
@@ -187,6 +283,82 @@ const publicPostSlice = createSlice({
 
     //* Handle the rejection
     builder.addCase(createPostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    //! Like post
+    builder.addCase(likePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //* Handle Fulfilled State
+    builder.addCase(likePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //* Handle the rejection
+    builder.addCase(likePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    //! Dislike post
+    builder.addCase(dislikePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //* Handle Fulfilled State
+    builder.addCase(dislikePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //* Handle the rejection
+    builder.addCase(dislikePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    //! Clap post
+    builder.addCase(clapPostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //* Handle Fulfilled State
+    builder.addCase(clapPostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //* Handle the rejection
+    builder.addCase(clapPostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    //! Post View Count
+    builder.addCase(postViewCountAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //* Handle Fulfilled State
+    builder.addCase(postViewCountAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //* Handle the rejection
+    builder.addCase(postViewCountAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });
@@ -269,6 +441,6 @@ const publicPostSlice = createSlice({
 
 //! Generate Reducer
 
-const postsReducer = publicPostSlice.reducer;
+const postsReducer = postsSlice.reducer;
 
 export default postsReducer;
