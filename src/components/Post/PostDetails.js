@@ -10,6 +10,7 @@ import { LoadingComponent } from "../Alert/LoadingComponent";
 import ErrorMsg from "../Alert/ErrorMsg";
 import PostStats from "./PostStats";
 import calculateReadingTime from "../../utils/calculateReadingTime";
+import AddComment from "../Comment/AddComment";
 
 const PostDetails = () => {
   const naviagte = useNavigate();
@@ -177,6 +178,7 @@ const PostDetails = () => {
               </h3>
 
               {/* Comment form */}
+              <AddComment postId={postId} comments={post?.post?.comments} />
             </div>
           </div>
         </section>
